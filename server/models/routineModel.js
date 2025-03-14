@@ -14,13 +14,13 @@ const routineSchema = new mongoose.Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category", // Routine belongs to a category
+      ref: "Category",
       required: true,
     },
     tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag", // Routine can have multiple tags
+        ref: "Tag", 
       },
     ],
     sets: { type: Number, required: true },

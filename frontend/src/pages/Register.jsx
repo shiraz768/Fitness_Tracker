@@ -6,7 +6,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    profilepic: null, // Change to store file object
+    profilepic: null, 
     theme: "light",
     notification: true,
   });
@@ -70,7 +70,7 @@ const Register = () => {
         {success && <p className="text-green-500 text-center">{success}</p>}
 
         <form onSubmit={handleRegister}>
-          {/* Username */}
+     
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Username</label>
             <input
@@ -82,7 +82,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Email */}
+         
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Email</label>
             <input
@@ -94,7 +94,6 @@ const Register = () => {
             />
           </div>
 
-          {/* Password */}
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Password</label>
             <input
@@ -106,7 +105,6 @@ const Register = () => {
             />
           </div>
 
-          {/* Profile Picture Upload */}
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Profile Picture</label>
             <input
@@ -119,7 +117,6 @@ const Register = () => {
             />
           </div>
 
-          {/* Theme Preference */}
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Theme Preference</label>
             <select
@@ -133,7 +130,6 @@ const Register = () => {
             </select>
           </div>
 
-          {/* Notifications Preference */}
           <div className="flex items-center mb-4">
             <input
               type="checkbox"
@@ -145,7 +141,7 @@ const Register = () => {
             <label className="text-gray-600">Enable Notifications</label>
           </div>
 
-          {/* Submit Button */}
+       
           <button
             type="submit"
             className="w-full bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-700 transition"

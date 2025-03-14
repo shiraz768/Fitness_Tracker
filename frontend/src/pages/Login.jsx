@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 const Login = () => {
-  const navigate = useNavigate(); // Hook for redirection
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +17,6 @@ const Login = () => {
         password,
       });
   
-      console.log("Server Response:", response); // ✅ Debugging log
   
       const { user } = response.data; 
   
@@ -30,7 +29,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/dashboard");
     } catch (err) {
-      console.error("Login Error:", err); // ✅ Log detailed error
+      console.error("Login Error:", err); 
   
       if (err.response) {
         console.log("Error Response Data:", err.response.data);

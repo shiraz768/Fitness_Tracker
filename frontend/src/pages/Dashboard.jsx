@@ -74,7 +74,7 @@ const Dashboard = () => {
     <>
       {user ? (
         <div className="h-screen">
-          {/* ✅ Include Navbar & Sidebar */}
+          
           <Dashboard_Navbar
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}

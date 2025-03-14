@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";  // ✅ Import Axios
+import axios from "axios";
+import { FaEdit, FaTrash } from "react-icons/fa"; // Importing icons
 
 const AddMoreTag = ({ setSelectedPage }) => {
   const [tags, setTags] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editTag, setEditTag] = useState(null); // Stores the tag being edited
+  const [editName, setEditName] = useState(""); // Input field for editing
+  const rowsPerPage = 5;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,8 +20,9 @@ const AddMoreTag = ({ setSelectedPage }) => {
         if (!userId) {
           throw new Error("User ID is missing. Please log in.");
         }
-
-        const response = await axios.get(`http://localhost:5000/api/tags?user_id=${userId}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/tags?user_id=${userId}`
+        );
         setTags(response.data);
       } catch (error) {
         setError(error.message);
@@ -26,86 +34,208 @@ const AddMoreTag = ({ setSelectedPage }) => {
     fetchTags();
   }, []);
 
-  // ✅ Handle Delete from Database
+  // 🔥 Delete Tag
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this tag?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/tags/${id}`);  // ✅ DELETE request
-        setTags(tags.filter((tag) => tag._id !== id)); // ✅ Remove from UI
+        const res = await axios.delete(`http://localhost:5000/api/tags/${id}`);
+        setTags(tags.filter((tag) => tag._id !== id));
+        alert(res.data.message)
       } catch (error) {
         alert("Failed to delete tag. Please try again.");
       }
     }
   };
 
+ 
+  const handleEditClick = (tag) => {
+    setEditTag(tag._id);
+    setEditName(tag.name);
+  };
+
+
+  const handleSaveEdit = async () => {
+    try {
+      await axios.put(`http://localhost:5000/api/tags/${editTag}`, {
+        name: editName,
+      });
+
+      setTags(
+        tags.map((tag) =>
+          tag._id === editTag ? { ...tag, name: editName } : tag
+        )
+      );
+
+      setEditTag(null); 
+    } catch (error) {
+      alert("Failed to update tag. Please try again.");
+    }
+  };
+
+  
+  const handleCancelEdit = () => {
+    setEditTag(null);
+  };
+
+  const filteredTags = tags.filter((tag) => {
+    if (search === "") return true;
+
+    if (selectedColumn === "all") {
+      return Object.values(tag)
+        .filter((val) => val !== null && val !== undefined)
+        .some((value) =>
+          String(value).toLowerCase().includes(search.toLowerCase())
+        );
+    } else {
+      return (
+        tag[selectedColumn] &&
+        String(tag[selectedColumn]).toLowerCase().includes(search.toLowerCase())
+      );
+    }
+  });
+
+  const totalPages = Math.ceil(filteredTags.length / rowsPerPage);
+  const paginatedTags = filteredTags.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
   return (
-    <div className="mt-20 shadow-lg w-[70%] mx-auto rounded bg-white p-6">
-      <div className="mb-6">
-        <p className="text-2xl font-bold text-gray-800">Tags List</p>
-      </div>
+    <div className="shadow-lg mt-10 p-5 w-[80%] mx-auto bg-white rounded-lg">
+      <p className="text-3xl font-semibold text-center mb-5 text-gray-800">
+        Tags List
+      </p>
 
-      {/* 🔍 Search & Filter */}
-      <div className="flex justify-between items-center pb-4 border-b">
-        <input
-          type="search"
-          placeholder="Search..."
-          className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-        />
-        <div className="flex items-center space-x-2">
-          <p className="text-gray-600">Filter by</p>
-          <select className="p-2 border border-gray-300 rounded focus:outline-none">
-            <option value="all">All Categories</option>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
+        <div className="flex flex-col md:flex-row gap-2">
+   
+          <select
+            className="p-3 border-2 border-gray-100 focus:border-teal-900 rounded-lg outline-none"
+            value={selectedColumn}
+            onChange={(e) => setSelectedColumn(e.target.value)}
+          >
+            <option value="all">All Columns</option>
+            <option value="name">Tag Name</option>
           </select>
+
+       
+          <input
+            type="search"
+            className="w-full md:w-[40%] p-3 border-gray-100 border-2 focus:outline-none rounded focus:border-teal-900"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+      
+          <button
+            className="p-3 bg-slate-700 text-white font-semibold rounded-lg hover:bg-slate-900 transition"
+            onClick={() => setSelectedPage("AddTags")}
+          >
+            Add Tag
+          </button>
         </div>
-        <button 
-          className="p-2 text-white bg-green-500 rounded hover:bg-green-600 transition"
-          onClick={() => setSelectedPage("AddTags")}
-        >
-          ➕ Add Tag
-        </button>
       </div>
 
-      {/* 📌 Tags List */}
+     
       {loading ? (
-        <p className="text-center mt-6 text-gray-500">Loading tags...</p>
+        <p className="text-center text-gray-600">Loading...</p>
       ) : error ? (
-        <p className="text-center mt-6 text-red-500">{error}</p>
-      ) : tags.length === 0 ? (
-        <p className="text-center mt-6 text-gray-500">No tags found.</p>
+        <p className="text-center text-red-500">{error}</p>
       ) : (
-        <table className="w-full mt-6 border border-gray-200">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="p-3 text-left">Tag Name</th>
-              <th className="p-3 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tags.map((tag) => (
-              <tr key={tag._id} className="border-b hover:bg-gray-100 transition">
-                <td className="p-3">{tag.name}</td>
-                <td className="p-3 flex justify-center space-x-4">
-                  <button className="px-3 py-1 text-blue-500 border border-blue-500 rounded hover:bg-blue-500 hover:text-white transition">
-                    ✏️ Edit
-                  </button>
-                  <button 
-                    className="px-3 py-1 text-red-500 border border-red-500 rounded hover:bg-red-500 hover:text-white transition"
-                    onClick={() => handleDelete(tag._id)}
-                  >
-                    🗑️ Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table className="min-w-full border border-gray-300 text-left">
+            <thead>
+              <tr className="bg-slate-900 text-white">
+                <th className="p-3 border">Tag Name</th>
+                <th className="p-3 border text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedTags.map((tag) => (
+                <tr key={tag._id} className="border hover:bg-gray-100 transition">
+                  <td className="p-3 border">
+                    {editTag === tag._id ? (
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="p-2 border rounded w-full"
+                      />
+                    ) : (
+                      tag.name
+                    )}
+                  </td>
+                  <td className="p-3 flex justify-center space-x-4 border">
+                    {editTag === tag._id ? (
+                      <>
+                   
+                        <button
+                          className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-700 transition"
+                          onClick={handleSaveEdit}
+                        >
+                          Save
+                        </button>
+
+              
+                        <button
+                          className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-700 transition"
+                          onClick={handleCancelEdit}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+     
+                        <button
+                          className="flex items-center space-x-2 px-3 py-1 text-blue-500 border border-blue-500 rounded hover:bg-blue-500 hover:text-white transition"
+                          onClick={() => handleEditClick(tag)}
+                        >
+                          <FaEdit />
+                          <span>Edit</span>
+                        </button>
+
+                 
+                        <button
+                          className="flex items-center space-x-2 px-3 py-1 text-red-500 border border-red-500 rounded hover:bg-red-500 hover:text-white transition"
+                          onClick={() => handleDelete(tag._id)}
+                        >
+                          <FaTrash />
+                          <span>Delete</span>
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {/* 📜 Pagination Buttons */}
-      <div className="flex justify-center mt-6 space-x-4">
-        <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">⬅️ Prev</button>
-        <span className="p-2 text-gray-700">1/2</span>
-        <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">➡️ Next</button>
+      <div className="flex justify-center mt-6 space-x-3">
+        <button
+          className={`p-3 rounded-lg font-semibold ${
+            currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        <span className="p-3 text-lg font-medium">
+          {currentPage} / {totalPages}
+        </span>
+        <button
+          className={`p-3 rounded-lg font-semibold ${
+            currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

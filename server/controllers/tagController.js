@@ -2,7 +2,7 @@ const Tag = require("../models/tagModel");
 
 const addTag = async (req, res) => {
   try {
-    const { name, description, createdBy } = req.body;
+    const { name, user_id, category,description, createdBy } = req.body;
 
     if (!name || !createdBy) {
       return res.status(400).json({ message: "Tag name and user ID are required" });
@@ -10,6 +10,8 @@ const addTag = async (req, res) => {
 
     const newTag = new Tag({
       name,
+      user_id,
+      category,
       description: description || "",
       createdBy,
     });
@@ -29,4 +31,14 @@ const getTags = async (req, res) => {
   }
 };
 
-module.exports = { addTag, getTags };
+const deleteTag = async (req, res) => {
+  try {
+    const {id} = req.params
+    const tags = await Tag.findOneAndDelete({_id:id});
+    res.status(200).json({message: "deleted successfully"});
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+module.exports = { addTag, getTags, deleteTag };

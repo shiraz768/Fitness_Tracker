@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const Category = require("../models/categoryModel");
+const Routine = require("../models/routineModel");
 
-// ✅ Add Category
 const addCategory = async (req, res) => {
   try {
     console.log("Received data:", req.body);
-
     const { name, description, createdBy } = req.body;
 
     if (!name || !createdBy) {
@@ -26,16 +25,29 @@ const addCategory = async (req, res) => {
   }
 };
 
-// ✅ Fetch All Categories (NEW FUNCTION)
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find(); // Fetch all categories from DB
+    const categories = await Category.find();
     res.status(200).json(categories);
   } catch (error) {
-    console.error("Error fetching categories:", error);
     res.status(500).json({ message: "Server error while fetching categories" });
   }
 };
 
-// ✅ Export Both Functions
-module.exports = { addCategory, getCategories };
+const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const existingRoutine = await Routine.findOne({ category: id });
+    if (existingRoutine) {
+      return res.status(400).json({ message: "Cannot delete category. It is linked to existing routines." });
+    }
+
+    await Category.findByIdAndDelete(id);
+    res.status(200).json({ message: "Category deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+module.exports = { addCategory, getCategories, deleteCategory };

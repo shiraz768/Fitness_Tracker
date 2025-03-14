@@ -9,6 +9,9 @@ const tagSchema = new mongoose.Schema(
       minlength: [2, "Tag name must be at least 2 characters"],
       maxlength: [30, "Tag name cannot exceed 30 characters"],
     },
+    user_id: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
+    category: { type: mongoose.Schema.ObjectId, ref: "Category", required: true },
+
     description: {
       type: String,
       trim: true,
@@ -17,14 +20,14 @@ const tagSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Links tag to a user
+      ref: "User", 
       required: true,
     },
   },
   { timestamps: true }
 );
 
-// Index for fast searching
+
 tagSchema.index({ name: 1 });
 
 module.exports = mongoose.model("Tag", tagSchema);

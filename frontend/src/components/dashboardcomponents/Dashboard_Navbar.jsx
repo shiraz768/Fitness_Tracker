@@ -119,7 +119,6 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
             )}
           </div>
 
-          {/* Nutrition Tracking Dropdown */}
           <div className="relative">
             <button
               onClick={() => setNutritionDropdown(!nutritionDropdown)}
@@ -138,7 +137,6 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
             )}
           </div>
 
-          {/* Other Sidebar Items */}
           <button
             onClick={() => setSelectedPage("ProgressTracking")}
             className="flex items-center px-4 py-2 w-full text-left hover:bg-gray-700 transition"
@@ -161,7 +159,6 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
         </div>
       </div>
 
-      {/* CSS Animations */}
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(-10px); }

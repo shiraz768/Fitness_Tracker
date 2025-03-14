@@ -17,14 +17,14 @@ const categorySchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Links category to a user
+      ref: "User", 
       required: true,
     },
   },
   { timestamps: true }
 );
 
-// Index for faster lookups
+
 categorySchema.index({ name: 1 });
 
 module.exports = mongoose.model("Category", categorySchema);

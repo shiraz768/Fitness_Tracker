@@ -15,10 +15,8 @@ const AddCategory = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/categories/add", {
         name: category, 
-        description: "This is a test category", // Optional
-        createdBy: "650f4c8e0f1b2c3a12345678", // Replace with actual user ID
-      }, {
-        headers: { "Content-Type": "application/json" }, // ✅ Ensure JSON is sent
+        description: "This is a test category",
+        createdBy: "650f4c8e0f1b2c3a12345678",
       });
 
       console.log("Response:", response.data);
@@ -40,13 +38,13 @@ const AddCategory = () => {
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-800 focus:outline-none"
             placeholder="Enter Category"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition duration-300"
+          className="w-full bg-slate-700 text-white font-semibold py-3 rounded-lg hover:bg-slate-900 transition duration-300"
         >
           Save Changes
         </button>

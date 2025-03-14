@@ -7,17 +7,17 @@ const Slider = () => {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 3,
-      slidesToSlide: 3, // Default to 1
+      slidesToSlide: 3, 
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 2,
-      slidesToSlide: 2, // Default to 1
+      slidesToSlide: 2, 
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 1,
-      slidesToSlide: 1, // Default to 1
+      slidesToSlide: 1, 
     },
   };
 
@@ -55,9 +55,9 @@ const Slider = () => {
           draggable={true}
           showDots={false}
           responsive={responsive}
-          ssr={true} // Enables server-side rendering
+          ssr={true} 
           infinite={true}
-          autoPlay={true} // No need for this.props
+          autoPlay={true} 
           autoPlaySpeed={2000}
           keyBoardControl={true}
           customTransition="all .5s ease-in-out"

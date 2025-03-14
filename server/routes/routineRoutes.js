@@ -1,10 +1,9 @@
 const express = require("express");
-const { addRoutine, getRoutines} = require("../controllers/routineController"); // Import controller functions
+const { addRoutine, getRoutines, deleteRoutine} = require("../controllers/routineController"); // Import controller functions
 
 const router = express.Router();
 
-// Define routes
-router.post("/add", addRoutine);  // Add a new routine
+router.post("/add", addRoutine);  
 router.get("/",getRoutines)
-
+router.delete("/:id",deleteRoutine);
 module.exports = router;

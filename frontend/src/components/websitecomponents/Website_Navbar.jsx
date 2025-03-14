@@ -13,7 +13,6 @@ const Website_Navbar = () => {
                     <p className='font-bold'>Fitness Tracker</p>
                 </div>
 
-                {/* Mobile menu button */}
                 <button
                     onClick={toggleMenu}
                     className='sm:hidden flex items-center text-white'
@@ -22,7 +21,7 @@ const Website_Navbar = () => {
                     <span>&#9776;</span>
                 </button>
 
-                {/* Navbar items */}
+          
                 <div className={`navItems ${menuOpen ? 'block' : 'hidden'} sm:block`}>
                     <ul className='flex flex-col justify-center items-center sm:flex-row  sm:space-y-0 sm:ml-auto space-y-4 sm:space-x-6'>
                         <li>

@@ -10,10 +10,10 @@ import Website_Footer from "./components/websitecomponents/Website_Footer";
 import Website_Navbar from "./components/websitecomponents/Website_Navbar";
 import Register from "./pages/Register";
 
-// Create Authentication Context
+
 const AuthContext = createContext();
 
-// Authentication Provider
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,6 @@ const AuthProvider = ({ children }) => {
 
 export  const useAuth = () => useContext(AuthContext);
 
-// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -68,7 +67,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+         
           <Route path="/" element={<WebsiteLayout><Home /></WebsiteLayout>} />
           <Route path="/about" element={<WebsiteLayout><About /></WebsiteLayout>} />
           <Route path="/feedback" element={<WebsiteLayout><Feedback /></WebsiteLayout>} />
@@ -76,7 +75,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Protected Dashboard Route */}
+        
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
