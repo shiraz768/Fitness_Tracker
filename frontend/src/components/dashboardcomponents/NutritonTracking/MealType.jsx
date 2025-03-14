@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AddMoreMeal = () => {
+const MealType = ({setSelectedPage}) => {
   return (
     <>
     <div className="shadow-lg mt-10 p-3 w-[60%] mx-auto rounded">
@@ -11,7 +11,9 @@ const AddMoreMeal = () => {
             className="p-2 border border-gray-300 rounded px-3 focus:border-blue-900 focus:outline-none"
             placeholder="Search..."
           />
-          <button className="p-2 text-white bg-green-500 rounded">
+          <button className="p-2 text-white bg-green-500 rounded"
+          onClick={()=>{setSelectedPage("AddMeal")}}
+          >
             Add Meal
           </button>
         </div>
@@ -40,4 +42,4 @@ const AddMoreMeal = () => {
   )
 }
 
-export default AddMoreMeal
+export default MealType

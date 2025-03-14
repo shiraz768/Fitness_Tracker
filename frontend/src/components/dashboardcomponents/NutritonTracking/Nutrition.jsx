@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddNutrition = () => {
+const Nutrition = ({ setSelectedPage}) => {
   const data = [
     {
       id: 1,
@@ -127,7 +127,9 @@ const AddNutrition = () => {
       </div>
 
       <div className="flex flex-wrap justify-center md:justify-evenly gap-3 my-3">
-        <button className="px-3 py-2 bg-green-600 text-white rounded">
+        <button className="px-3 py-2 bg-green-600 text-white rounded"
+        onClick={()=> setSelectedPage("AddNutrition")}
+        >
           Add Nutrition
         </button>
         <button className="px-3 py-2 bg-indigo-600 text-white rounded">
@@ -207,4 +209,4 @@ const AddNutrition = () => {
   );
 };
 
-export default AddNutrition;
+export default Nutrition;

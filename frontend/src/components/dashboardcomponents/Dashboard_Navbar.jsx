@@ -24,7 +24,7 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
 
   return (
     <div>
-      {/* ✅ Top Navbar */}
+     
       <div className="bg-gray-900 text-white p-4 flex items-center justify-between fixed w-full z-10 h-16 shadow-lg">
         <button
           className="text-white text-2xl p-3 hover:bg-gray-700 rounded transition"
@@ -40,10 +40,10 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="text-white text-3xl hover:text-gray-300 transition"
-          >{user ? <img src={` ${user.profilepic}`} alt="" width={100} height={100} /> :
+          >
             <IoPersonCircleSharp />
           
-}
+
             </button>
           <p className="text-center p-3">{user.username}</p>
           </div>
@@ -82,14 +82,13 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
         </div>
       </div>
 
-      {/* ✅ Sidebar Navigation */}
       <div
         className={`bg-gray-900 text-white h-screen fixed left-0 top-[64px] transition-all duration-300 shadow-lg ${
           isSidebarOpen ? "w-[250px]" : "w-[60px]"
         }`}
       >
         <div className="space-y-6 mt-4">
-          {/* Dashboard */}
+    
           <button
             onClick={() => setSelectedPage("DashboardHome")}
             className="flex items-center px-4 py-2 w-full text-left hover:bg-gray-700 transition"
@@ -100,7 +99,7 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
             </span>
           </button>
 
-          {/* Workout Tracking Dropdown */}
+     
           <div className="relative">
             <button
               onClick={() => setWorkoutDropdown(!workoutDropdown)}
@@ -133,8 +132,8 @@ const Dashboard_Navbar = ({ isSidebarOpen, setIsSidebarOpen, setSelectedPage,use
             </button>
             {nutritionDropdown && isSidebarOpen && (
               <div className="ml-10 bg-gray-800 text-white rounded shadow-md overflow-hidden animate-slideDown">
-                <button onClick={() => setSelectedPage("AddNutrition")} className="block px-4 py-2 w-full text-left hover:bg-gray-700 transition">Add Nutrition</button>
-                <button onClick={() => setSelectedPage("AddMoreMeal")} className="block px-4 py-2 w-full text-left hover:bg-gray-700 transition">Add More Meal</button>
+                <button onClick={() => setSelectedPage("Nutrition")} className="block px-4 py-2 w-full text-left hover:bg-gray-700 transition">Add Nutrition</button>
+                <button onClick={() => setSelectedPage("MealType")} className="block px-4 py-2 w-full text-left hover:bg-gray-700 transition">Add More Meal</button>
               </div>
             )}
           </div>

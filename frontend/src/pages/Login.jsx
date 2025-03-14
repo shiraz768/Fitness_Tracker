@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from 'axios'
 const Login = () => {
   const navigate = useNavigate(); // Hook for redirection
   const [email, setEmail] = useState("");
@@ -10,29 +10,41 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Instead of storing a token, store the user data
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/dashboard"); // Redirect to dashboard
-      } else {
-        setError(data.message);
+  
+      console.log("Server Response:", response); // ✅ Debugging log
+  
+      const { user } = response.data; 
+  
+      if (!user || !user._id) {
+        setError("User ID is missing from response");
+        return;
       }
+  
+      localStorage.setItem("userId", user._id);
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/dashboard");
     } catch (err) {
-      setError("Server error. Try again.");
+      console.error("Login Error:", err); // ✅ Log detailed error
+  
+      if (err.response) {
+        console.log("Error Response Data:", err.response.data);
+        console.log("Error Status:", err.response.status);
+        console.log("Error Headers:", err.response.headers);
+        setError(err.response.data.message || "Invalid credentials");
+      } else if (err.request) {
+        console.log("No Response Received:", err.request);
+        setError("No response from");
+      }
     }
+  
   };
+  
 
   return (
     <div

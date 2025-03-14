@@ -7,16 +7,19 @@ import UserPreferences from "../components/dashboardcomponents/UserPreferences";
 import AddWorkout from "../components/dashboardcomponents/WorkoutTracking/AddWorkout";
 import AddMoreCategory from "../components/dashboardcomponents/WorkoutTracking/AddMoreCategory";
 import AddMoreTag from "../components/dashboardcomponents/WorkoutTracking/AddMoreTag";
-import AddNutrition from "../components/dashboardcomponents/NutritonTracking/AddNutrition";
-import AddMoreMeal from "../components/dashboardcomponents/NutritonTracking/AddMoreMeal";
+import AddNutrition from "../components/dashboardcomponents/NutritonTracking/SubComponents/AddNutrition";
+import MealType from "../components/dashboardcomponents/NutritonTracking/MealType";
 import ProgressTracking from "../components/dashboardcomponents/ProgressTracking";
 import SetReminder from "../components/dashboardcomponents/SetReminder";
 import AddRoutine from "../components/dashboardcomponents/WorkoutTracking/SubComponents/AddRoutine";
+import AddCategory from "../components/dashboardcomponents/WorkoutTracking/SubComponents/AddCategory";
 import { useAuth } from "../App";
+import AddTags from "../components/dashboardcomponents/WorkoutTracking/SubComponents/AddTags";
+import Nutrition from "../components/dashboardcomponents/NutritonTracking/Nutrition";
+import AddMeal from "../components/dashboardcomponents/NutritonTracking/SubComponents/AddMeal";
 
 const Dashboard = () => {
-
-  const {user, logout} = useAuth();
+  const { user, logout } = useAuth();
   const [selectedPage, setSelectedPage] = useState(
     localStorage.getItem("selectedPage") || "DashboardHome"
   );
@@ -40,19 +43,28 @@ const Dashboard = () => {
         return <AddWorkout setSelectedPage={setSelectedPage} />;
 
       case "AddMoreCategory":
-        return <AddMoreCategory />;
+        return <AddMoreCategory setSelectedPage={setSelectedPage} />;
       case "AddMoreTag":
-        return <AddMoreTag />;
-      case "AddNutrition":
-        return <AddNutrition />;
-      case "AddMoreMeal":
-        return <AddMoreMeal />;
+        return <AddMoreTag setSelectedPage={setSelectedPage} />;
+      case "Nutrition":
+        return <Nutrition setSelectedPage={setSelectedPage} />;
+      case "MealType":
+        return <MealType setSelectedPage={setSelectedPage} />;
       case "ProgressTracking":
         return <ProgressTracking />;
       case "SetReminder":
         return <SetReminder />;
       case "AddRoutine":
         return <AddRoutine />;
+      case "AddCategory":
+        return <AddCategory />;
+      case "AddTags":
+        return <AddTags />;
+      case "AddNutrition":
+        return <AddNutrition />;
+      case "AddMeal":
+        return <AddMeal />;
+
       default:
         return <DashboardHome />;
     }
@@ -61,27 +73,27 @@ const Dashboard = () => {
   return (
     <>
       {user ? (
-    <div className="h-screen">
-      {/* ✅ Include Navbar & Sidebar */}
-      <Dashboard_Navbar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        setSelectedPage={setSelectedPage}
-        user={user}
-        logout= {logout}
-      />
-      
-    
-      <div
-      className={`p-6 pt-16 transition-all duration-300 ${
-        isSidebarOpen ? "ml-[250px]" : "ml-[60px]"
-        }`}
-        >
-        {renderPage()}
-      </div>
-      </div>
-    ) : <p>Loading user...</p>
-    }
+        <div className="h-screen">
+          {/* ✅ Include Navbar & Sidebar */}
+          <Dashboard_Navbar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            setSelectedPage={setSelectedPage}
+            user={user}
+            logout={logout}
+          />
+
+          <div
+            className={`p-6 pt-16 transition-all duration-300 ${
+              isSidebarOpen ? "ml-[250px]" : "ml-[60px]"
+            }`}
+          >
+            {renderPage()}
+          </div>
+        </div>
+      ) : (
+        <p>Loading user...</p>
+      )}
     </>
   );
 };
