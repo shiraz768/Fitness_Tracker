@@ -5,9 +5,9 @@ const AddMeal = () => {
   const handleMeal = async (e) => {
     e.preventDefault();
     
-    const storedId = localStorage.getItem("user");
-    const user_Id = JSON.parse(storedId)._id;
-    console.log(user_Id);
+    const user_Id = localStorage.getItem("userId");
+   
+   
     if (!user_Id) {
       alert("User not found. Please log in.");
       return;

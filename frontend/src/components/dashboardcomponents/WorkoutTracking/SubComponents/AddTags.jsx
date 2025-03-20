@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-const AddTag = () => {
+const AddTag = ({setSelectedPage}) => {
   const [tag, setTag] = useState({ name: "", description: "" });
 
   const handleChange = (e) => {
@@ -11,9 +12,7 @@ const AddTag = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user ? user._id : null;
-
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       alert("User ID is missing. Please log in again.");
       return;
@@ -24,7 +23,9 @@ const AddTag = () => {
       const categories = categoryResponse.data;
 
       if (!categories.length) {
-        alert("No categories found. Please create a category first.");
+        toast.dark("No categories found. Please create a category first.",{style:{backgroundColor:"rebeccapurple",color:"white"}});
+        setTag({name:"",description:""})
+        
         return;
       }
 
@@ -39,8 +40,9 @@ const AddTag = () => {
         createdBy: userId, 
       });
 
-      alert("Tag added successfully!");
+      toast.success("Tag added successfully!");
       setTag({ name: "", description: "" }); 
+      setSelectedPage("AddMoreTag")
     } catch (error) {
       console.error("Error adding tag:", error.response?.data || error.message);
       alert("Failed to add tag. Please try again.");
@@ -72,7 +74,7 @@ const AddTag = () => {
 
         <button
           type="submit"
-          className="w-full bg-slate-700 text-white font-semibold py-3 rounded-lg hover:bg-slate-900 transition"
+          className={`w-full bg-teal-700 text-white font-semibold py-3 rounded-lg hover:bg-teal-900 transition `}
         >
           Add Tag
         </button>

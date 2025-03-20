@@ -30,15 +30,23 @@ const getTags = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
+const updateTag = async (req, res) => {
+  try {
+    const {id} = req.params
+    await Tag.findOneAndUpdate({_id:id});
+    res.status(200).json({message: "updated successfully"});
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
 const deleteTag = async (req, res) => {
   try {
     const {id} = req.params
-    const tags = await Tag.findOneAndDelete({_id:id});
+    await Tag.findOneAndDelete({_id:id});
     res.status(200).json({message: "deleted successfully"});
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-module.exports = { addTag, getTags, deleteTag };
+module.exports = { addTag, getTags, deleteTag , updateTag};

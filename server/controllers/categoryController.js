@@ -34,20 +34,36 @@ const getCategories = async (req, res) => {
   }
 };
 
-const deleteCategory = async (req, res) => {
+
+const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const existingRoutine = await Routine.findOne({ category: id });
-    if (existingRoutine) {
-      return res.status(400).json({ message: "Cannot delete category. It is linked to existing routines." });
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ success: false, message: "Category name is required" });
     }
-
-    await Category.findByIdAndDelete(id);
-    res.status(200).json({ message: "Category deleted successfully" });
+    const updatedCategory = await Category.findByIdAndUpdate(id, { name }, { new: true });
+    if (!updatedCategory) {
+      return res.status(404).json({ success: false, message: "Category not found" });
+    }
+    res.status(200).json({ success: true, message: "Category updated successfully", category: updatedCategory });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error updating category:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
-module.exports = { addCategory, getCategories, deleteCategory };
+const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCategory = await Category.findByIdAndDelete(id);
+    if (!deletedCategory) {
+      return res.status(404).json({ success: false, message: "Category not found" });
+    }
+    res.status(200).json({ success: true, message: "Category deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+module.exports = { addCategory, getCategories, deleteCategory , updateCategory };

@@ -6,7 +6,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    profilepic: null, 
+    profilepic: null,
     theme: "light",
     notification: true,
   });
@@ -16,7 +16,6 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-
     if (type === "file") {
       setFormData({ ...formData, [name]: files[0] });
     } else {
@@ -34,13 +33,15 @@ const Register = () => {
       formDataToSend.append("username", formData.username);
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
-      formDataToSend.append("theme", formData.theme);
+      formDataToSend.append("theme", formData.theme); 
       formDataToSend.append("notification", formData.notification);
-      
+
       if (formData.profilepic) {
         formDataToSend.append("profilepic", formData.profilepic);
       }
-      console.log([...formDataToSend.entries()]);
+      
+     
+      
 
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
@@ -51,11 +52,11 @@ const Register = () => {
       );
       setSuccess(response.data.message);
       alert("Registration successful! You can now log in.");
-      window.location.href = "/login"; // Redirect to login page
+      window.location.href = "/login"; 
     } catch (err) {
       setError(err.response?.data?.error || "Registration failed");
     }
-    console.log(formData)
+    console.log(formData);
   };
 
   return (
@@ -70,7 +71,6 @@ const Register = () => {
         {success && <p className="text-green-500 text-center">{success}</p>}
 
         <form onSubmit={handleRegister}>
-     
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Username</label>
             <input
@@ -82,7 +82,6 @@ const Register = () => {
             />
           </div>
 
-         
           <div className="flex flex-col mb-4">
             <label className="mb-1 text-gray-600">Email</label>
             <input
@@ -110,7 +109,6 @@ const Register = () => {
             <input
               type="file"
               name="profilepic"
-              
               accept="image/*"
               className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               onChange={handleChange}
@@ -141,7 +139,6 @@ const Register = () => {
             <label className="text-gray-600">Enable Notifications</label>
           </div>
 
-       
           <button
             type="submit"
             className="w-full bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-700 transition"

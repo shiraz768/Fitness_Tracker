@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const AddNutrition = () => {
+const AddNutrition = ({ setSelectedPage, editData }) => {
   const [mealTypes, setMealTypes] = useState([]); 
   const [selectedMealType, setSelectedMealType] = useState(""); 
   const [userId, setUserId] = useState(""); 
@@ -20,58 +21,82 @@ const AddNutrition = () => {
       .then((res) => setMealTypes(res.data))
       .catch((err) => console.error("Error fetching meal types:", err));
 
-    
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setUserId(user._id); 
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
     }
   }, []);
 
+
+  useEffect(() => {
+    if (editData) {
+     
+      setFormData({
+        nutritionname: editData.nutritionname || "",
+        quantity: editData.quantity || "",
+        calories: editData.calories || "",
+        carbohydrates: editData.carbohydrates || "",
+        protein: editData.protein || "",
+        fat: editData.fat || "",
+      });
+      if (editData.mealType_Id) {
+        setSelectedMealType(editData.mealType_Id);
+      }
+    }
+  }, [editData]);
+ 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleMealTypeChange = (e) => {
-    setSelectedMealType(e.target.value); 
+    setSelectedMealType(e.target.value);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedMealType || !userId) {
       alert("Please select a meal type and ensure you are logged in.");
       return;
     }
 
-    const nutritionData = { ...formData, mealType_Id: selectedMealType, user_Id: userId };
+    const nutritionData = { 
+      ...formData, 
+      mealType_Id: selectedMealType, 
+      user_Id: userId 
+    };
 
     console.log("Submitting nutrition data:", nutritionData);
 
     try {
-      await axios.post("http://localhost:5000/api/nutrition/add", nutritionData);
-      alert("Nutrition added successfully!");
-      setFormData({
-        nutritionname: "",
-        quantity: "",
-        calories: "",
-        carbohydrates: "",
-        protein: "",
-        fat: "",
-      });
-      setSelectedMealType("");
+      if (editData) {
+    
+        await axios.put(`http://localhost:5000/api/nutrition/${editData._id}`, nutritionData);
+        toast.success("Nutrition updated successfully!");
+        setSelectedPage("Nutrition");
+      } else {
+     
+        await axios.post("http://localhost:5000/api/nutrition/add", nutritionData);
+        toast.success("Nutrition added successfully!");
+      }
+      setSelectedPage("Nutrition");
     } catch (error) {
-      console.error("Error adding nutrition:", error);
-      alert("Failed to add nutrition.");
+      console.error("Error adding/updating nutrition:", error);
+      alert(error.response?.data?.message || "Failed to save nutrition.");
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Add Nutrition Tracker</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
+      >
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          {editData ? "Edit Nutrition Tracker" : "Add Nutrition Tracker"}
+        </h1>
 
-    
         <label className="block mb-4">
           <span className="text-gray-700">Meal Type:</span>
           <select
@@ -89,7 +114,6 @@ const AddNutrition = () => {
             ))}
           </select>
         </label>
-
 
         <label className="block mb-4">
           <span className="text-gray-700">Name:</span>
@@ -163,9 +187,11 @@ const AddNutrition = () => {
           />
         </label>
 
-       
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
-          Add Nutrition
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+        >
+          {editData ? "Update Nutrition" : "Add Nutrition"}
         </button>
       </form>
     </div>

@@ -1,98 +1,73 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import axios from "axios";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { useTheme } from "../../../pages/Dashboard";
+import { toast } from "react-toastify";
 
-const Nutrition = ({ setSelectedPage}) => {
-  const data = [
-    {
-      id: 1,
-      mealType: "Breakfast",
-      foodItems: "Oatmeal, Banana",
-      quantity: "1 bowl",
-      calories: 250,
-      carbs: "45g",
-      proteins: "8g",
-      fats: "5g",
-      createdAt: "2024-03-01",
-      updatedAt: "2024-03-02",
-    },
-    {
-      id: 2,
-      mealType: "Lunch",
-      foodItems: "Grilled Chicken, Rice",
-      quantity: "200g",
-      calories: 500,
-      carbs: "60g",
-      proteins: "40g",
-      fats: "10g",
-      createdAt: "2024-03-02",
-      updatedAt: "2024-03-02",
-    },
-    {
-      id: 3,
-      mealType: "Dinner",
-      foodItems: "Salmon, Vegetables",
-      quantity: "150g",
-      calories: 400,
-      carbs: "30g",
-      proteins: "35g",
-      fats: "15g",
-      createdAt: "2024-03-03",
-      updatedAt: "2024-03-04",
-    },
-    {
-      id: 4,
-      mealType: "Snack",
-      foodItems: "Almonds, Yogurt",
-      quantity: "100g",
-      calories: 300,
-      carbs: "20g",
-      proteins: "10g",
-      fats: "20g",
-      createdAt: "2024-03-04",
-      updatedAt: "2024-03-05",
-    },
-    {
-      id: 5,
-      mealType: "Post-Workout",
-      foodItems: "Protein Shake",
-      quantity: "1 scoop",
-      calories: 200,
-      carbs: "15g",
-      proteins: "25g",
-      fats: "2g",
-      createdAt: "2024-03-05",
-      updatedAt: "2024-03-06",
-    },
-    {
-      id: 6,
-      mealType: "Post-Workout",
-      foodItems: "Protein Shake",
-      quantity: "1 scoop",
-      calories: 200,
-      carbs: "15g",
-      proteins: "25g",
-      fats: "2g",
-      createdAt: "2024-03-05",
-      updatedAt: "2024-03-06",
-    },
-  ];
+const Nutrition = ({ setSelectedPage }) => {
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
+  const [nutritions, setNutritions] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredData = data
-    .filter(
-      (item) =>
-        search === "" ||
-        Object.values(item).some((value) =>
-          String(value).toLowerCase().includes(search.toLowerCase())
-        )
-    )
-    .filter(
-      (item) =>
-        filter === "all" || item.mealType.toLowerCase() === filter.toLowerCase()
-    );
+ 
+  const fetchNutritions = useCallback(async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        throw new Error("User ID is missing. Please log in.");
+      }
+      const res = await axios.get(`http://localhost:5000/api/nutrition/${userId}`);
+      setNutritions(res.data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchNutritions();
+  }, [fetchNutritions]);
+
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this nutrition item?")) {
+      try {
+        await axios.delete(`http://localhost:5000/api/nutrition/${id}`);
+        setNutritions((prev) => prev.filter((item) => item._id !== id));
+        toast.success("Nutrition item deleted successfully!");
+        fetchNutritions()
+      } catch (error) {
+        alert("Failed to delete item. Please try again.");
+      }
+    }
+  };
+
+
+  const handleEdit = (item) => {
+    setSelectedPage("AddNutrition", item);
+  };
+
+ 
+  const filteredData = nutritions.filter((item) =>
+    search === "" ||
+    (filter === "all"
+      ? Object.values(item)
+          .map((value) =>
+            typeof value === "object" ? JSON.stringify(value) : String(value)
+          )
+          .some((value) => value.toLowerCase().includes(search.toLowerCase()))
+      : String(filter.split(".").reduce((o, key) => o?.[key], item) || "")
+          .toLowerCase()
+          .includes(search.toLowerCase()))
+  );
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const paginatedData = filteredData.slice(
@@ -101,105 +76,145 @@ const Nutrition = ({ setSelectedPage}) => {
   );
 
   return (
-    <div className="mt-20 shadow-lg text-center rounded w-[90%] mx-auto p-4">
-      <p className="text-3xl mb-4">Nutrition List</p>
+    <div
+      className={`shadow-lg mt-10 p-6 w-[90%] md:w-[80%] mx-auto rounded-lg ${
+        isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"
+      }`}
+    >
+      <p className="text-3xl font-semibold text-center mb-5">Nutrition List</p>
 
-      <div className="py-3 flex flex-col md:flex-row items-center justify-evenly gap-3">
-        <input
-          type="search"
-          placeholder="Search..."
-          className="px-2 py-2 w-full md:w-auto rounded border border-gray-300 focus:outline-none focus:border-teal-500"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          className="px-2 py-2 w-full md:w-auto rounded border border-gray-300 focus:outline-none focus:border-teal-500"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="all">Filter By Meal Type</option>
-          <option value="Breakfast">Breakfast</option>
-          <option value="Lunch">Lunch</option>
-          <option value="Dinner">Dinner</option>
-          <option value="Snack">Snack</option>
-          <option value="Post-Workout">Post-Workout</option>
-        </select>
-      </div>
-
-      <div className="flex flex-wrap justify-center md:justify-evenly gap-3 my-3">
-        <button className="px-3 py-2 bg-green-600 text-white rounded"
-        onClick={()=> setSelectedPage("AddNutrition")}
-        >
-          Add Nutrition
-        </button>
-        <button className="px-3 py-2 bg-indigo-600 text-white rounded">
-          Export PDF
-        </button>
-        <button className="px-3 py-2 bg-cyan-600 text-white rounded">
-          Export CSV
-        </button>
-      </div>
-    <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-left">
-          <thead>
-            <tr className="bg-cyan-950 text-white">
-              <th className="p-2">ID</th>
-              <th className="p-2">Meal Type</th>
-              <th className="p-2">Food Items</th>
-              <th className="p-2">Quantity</th>
-              <th className="p-2">Calories</th>
-              <th className="p-2">Carbs</th>
-              <th className="p-2">Proteins</th>
-              <th className="p-2">Fats</th>
-              <th className="p-2">Created At</th>
-              <th className="p-2">Updated At</th>
-              <th className="p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((item) => (
-              <tr key={item.id} className="hover:bg-slate-100 border-b">
-                <td className="p-2">{item.id}</td>
-                <td className="p-2">{item.mealType}</td>
-                <td className="p-2">{item.foodItems}</td>
-                <td className="p-2">{item.quantity}</td>
-                <td className="p-2">{item.calories}</td>
-                <td className="p-2">{item.carbs}</td>
-                <td className="p-2">{item.proteins}</td>
-                <td className="p-2">{item.fats}</td>
-                <td className="p-2">{item.createdAt}</td>
-                <td className="p-2">{item.updatedAt}</td>
-                <td className="p-2">
-                  <button className="px-2 py-1 bg-yellow-500 text-white rounded mr-2">
-                    Edit
-                  </button>
-                  <button className="px-2 py-1 bg-red-600 text-white rounded">
-                    Delete
-                  </button>
-                </td>
-              </tr>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
+        <div className="flex flex-col md:flex-row gap-2 w-full">
+          <input
+            type="search"
+            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+              isDarkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300 bg-gray-100"
+            }`}
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select
+            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+              isDarkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300 bg-gray-100"
+            }`}
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="all">Filter By Column</option>
+            {[
+              { key: "mealType_Id.mealtypename", label: "Meal Type" },
+              { key: "nutritionname", label: "Food Items" },
+              { key: "quantity", label: "Quantity" },
+              { key: "calories", label: "Calories" },
+              { key: "carbohydrates", label: "Carbs" },
+              { key: "protein", label: "Proteins" },
+              { key: "fat", label: "Fats" },
+              { key: "createdAt", label: "Created At" },
+              { key: "updatedAt", label: "Updated At" },
+            ].map((col) => (
+              <option key={col.key} value={col.key}>
+                {col.label}
+              </option>
             ))}
-          </tbody>
-        </table>
+          </select>
+          <button
+            className="p-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
+            onClick={() => setSelectedPage("AddNutrition")}
+          >
+            Add Nutrition
+          </button>
+        </div>
       </div>
 
+      {loading ? (
+        <p className="text-center text-gray-400">Loading...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">{error}</p>
+      ) : (
+        <div className="overflow-x-auto rounded-lg shadow-md">
+          <table className="min-w-full border-collapse text-left">
+            <thead>
+              <tr className={isDarkMode ? "bg-gray-700 text-gray-100" : "bg-teal-600 text-white"}>
+                <th className="p-4">Meal Type</th>
+                <th className="p-4">Food Items</th>
+                <th className="p-4">Quantity</th>
+                <th className="p-4">Calories</th>
+                <th className="p-4">Carbs</th>
+                <th className="p-4">Proteins</th>
+                <th className="p-4">Fats</th>
+                <th className="p-4">Created At</th>
+                <th className="p-4">Updated At</th>
+                <th className="p-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((item, index) => (
+                <tr
+                  key={item._id}
+                  className={`transition ${
+                    index % 2 === 0
+                      ? isDarkMode
+                        ? "bg-gray-800"
+                        : "bg-gray-50"
+                      : isDarkMode
+                      ? "bg-gray-750"
+                      : "bg-gray-100"
+                  } hover:bg-opacity-70`}
+                >
+                  <td className="p-4">{item.mealType_Id?.mealtypename}</td>
+                  <td className="p-4">{item.nutritionname}</td>
+                  <td className="p-4">{item.quantity}</td>
+                  <td className="p-4">{item.calories}</td>
+                  <td className="p-4">{item.carbohydrates}</td>
+                  <td className="p-4">{item.protein}</td>
+                  <td className="p-4">{item.fat}</td>
+                  <td className="p-4">{new Date(item.createdAt).toLocaleDateString()}</td>
+                  <td className="p-4">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                  <td className="p-4 flex justify-center space-x-4">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="p-2 hover:text-teal-400 transition"
+                    >
+                      <FaEdit size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="p-2 hover:text-red-400 transition"
+                    >
+                      <FaTrash size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-      <div className="flex justify-center mt-4 gap-3">
+
+      <div className="flex justify-center mt-6 space-x-3">
         <button
-          className={`px-3 py-2 ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : "bg-blue-500 text-white"}`}
+          className={`p-3 rounded-lg font-semibold ${
+            currentPage === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-teal-600 text-white hover:bg-teal-700"
+          }`}
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Prev
         </button>
-        <span className="p-2">
+        <span className={`p-3 text-lg font-medium ${isDarkMode ? "text-gray-300" : "text-teal-600"}`}>
           {currentPage} / {totalPages}
         </span>
         <button
-          className={`px-3 py-2 ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "bg-blue-500 text-white"}`}
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
+          className={`p-3 rounded-lg font-semibold ${
+            currentPage === totalPages
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-teal-600 text-white hover:bg-teal-700"
+          }`}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
         >
           Next

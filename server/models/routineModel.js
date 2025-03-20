@@ -23,6 +23,8 @@ const routineSchema = new mongoose.Schema(
         ref: "Tag", 
       },
     ],
+    duration: { type: Number, required: true },  
+    caloriesBurned: { type: Number, required: true },
     sets: { type: Number, required: true },
     reps: { type: Number, required: true },
     weight: { type: Number },

@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       theme: { type: String, default: "light" },
       notification: { type: Boolean, default: true },
     },
+    
   },
   { timestamps: true }
 );

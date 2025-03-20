@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const AddCategory = () => {
+const AddCategory = ({setSelectedPage}) => {
   const [category, setCategory] = useState("");
 
   const handleSubmit = async (e) => {
@@ -19,8 +20,9 @@ const AddCategory = () => {
         createdBy: "650f4c8e0f1b2c3a12345678",
       });
 
-      console.log("Response:", response.data);
-      alert("Category added successfully!");
+      toast.success("Category added successfully!");
+      setCategory("")
+      setSelectedPage("CategoryManagement")
     } catch (error) {
       console.error("Error adding category:", error.response?.data || error);
       alert(error.response?.data?.message || "Something went wrong!");

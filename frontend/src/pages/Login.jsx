@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
+import { useAuth } from "../AuthContext";
+
 const Login = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -10,44 +13,43 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-  
+
+    console.log("Login Attempt:", { email, password });
+
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
-  
-  
-      const { user } = response.data; 
-  
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      console.log("Login Success:", response.data);
+
+      const { user } = response.data;
       if (!user || !user._id) {
         setError("User ID is missing from response");
         return;
       }
-  
-      localStorage.setItem("userId", user._id);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/dashboard");
+      login(user);
+      navigate("/dashboard", { replace: true });
+
     } catch (err) {
-      console.error("Login Error:", err); 
-  
+      console.error("Login Error:", err);
       if (err.response) {
         console.log("Error Response Data:", err.response.data);
-        console.log("Error Status:", err.response.status);
-        console.log("Error Headers:", err.response.headers);
-        setError(err.response.data.message || "Invalid credentials");
+        setError(err.response.data?.message || "Invalid credentials");
       } else if (err.request) {
         console.log("No Response Received:", err.request);
-        setError("No response from");
+        setError("No response from server. Please try again later.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
       }
     }
-  
   };
-  
 
   return (
     <div
-      className="h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" 
+      className="h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('./dd.jpg')" }}
     >
       <div className="w-full max-w-sm shadow-md p-6 bg-white rounded-lg">
@@ -64,6 +66,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="username"
             />
           </div>
 
@@ -76,6 +79,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password"
             />
           </div>
 
@@ -83,6 +87,16 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        <div className="mt-4 text-center">
+          <p className="text-gray-600 mb-2">Don't have an account?</p>
+          <button
+            onClick={() => navigate("/register")}
+            className="w-full bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Register
+          </button>
+        </div>
       </div>
     </div>
   );

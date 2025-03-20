@@ -10,7 +10,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register Chart.js modules
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,7 +25,7 @@ const WorkoutFrequencyChart = () => {
     datasets: [
       {
         label: "Weight Frequency",
-        data: [], // Example data
+        data: [], 
         backgroundColor: ["#ff4894", "#FF3324", "#FFCE56"],
       },
     ],
@@ -37,12 +36,12 @@ const WorkoutFrequencyChart = () => {
 
     plugins: {
       legend: { position: "top" },
-      //   title: { display: true, text: "Weight Progress" },
+     
     },
   };
 
   return (
-    <div  className="rounded shadow-md  border border-gray-300 h-[100%] p-6 mt-5">
+    <div  className="text-white  bg-linear-210 from-black to-gray-600  h-[100%] p-6 mt-5">
       <p className="text-2xl p-3">Workout Frequency </p>
 
       <Line data={data} options={options} />
