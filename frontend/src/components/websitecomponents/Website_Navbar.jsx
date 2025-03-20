@@ -6,14 +6,15 @@ const Website_Navbar = () => {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  // This function will close the menu on mobile when a link is clicked
+  const userId = localStorage.getItem("userId");
+  
   const handleNavLinkClick = () => setMenuOpen(false);
 
   return (
     <>
       <div className="fixed top-0 left-0 w-full z-50 shadow-md bg-black text-white">
         <div className="container mx-auto px-14 py-3 flex flex-col sm:flex-row items-center justify-between">
-          {/* Logo Section */}
+         
           <div className="navLogo flex justify-center items-center">
             {/* <img src="./logo.jpg" alt="" height={40} width={40} /> */}
             <span className="text-3xl font-bold text-blue-500">𝓕</span>
@@ -68,6 +69,17 @@ const Website_Navbar = () => {
                   Feedback
                 </NavLink>
               </li>
+              {userId ? 
+              <li>
+              <NavLink
+                to="/dashboard"
+                onClick={handleNavLinkClick}
+                className="rounded bg-blue-500 py-3 px-5"
+              >
+                Dashboard
+              </NavLink>
+            </li> 
+:
               <li>
                 <NavLink
                   to="/login"
@@ -76,7 +88,8 @@ const Website_Navbar = () => {
                 >
                   Login
                 </NavLink>
-              </li>
+              </li> 
+}
             </ul>
           </div>
         </div>

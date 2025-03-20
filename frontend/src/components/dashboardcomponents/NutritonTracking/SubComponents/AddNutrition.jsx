@@ -93,7 +93,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
       >
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 className="text-3xl font-bold mb-6  text-gray-800 text-center">
           {editData ? "Edit Nutrition Tracker" : "Add Nutrition Tracker"}
         </h1>
 
@@ -103,7 +103,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="mealType"
             value={selectedMealType}
             onChange={handleMealTypeChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           >
             <option value="">Select Meal Type</option>
@@ -122,7 +122,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="nutritionname"
             value={formData.nutritionname}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
@@ -134,7 +134,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="quantity"
             value={formData.quantity}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
@@ -146,7 +146,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="calories"
             value={formData.calories}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
@@ -158,7 +158,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="carbohydrates"
             value={formData.carbohydrates}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
@@ -170,7 +170,7 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="protein"
             value={formData.protein}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
@@ -182,14 +182,14 @@ const AddNutrition = ({ setSelectedPage, editData }) => {
             name="fat"
             value={formData.fat}
             onChange={handleChange}
-            className="block w-full mt-1 border border-gray-300 rounded px-3 py-2"
+            className="block w-full mt-1 border text-gray-800 border-gray-300 rounded px-3 py-2"
             required
           />
         </label>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+          className="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-800"
         >
           {editData ? "Update Nutrition" : "Add Nutrition"}
         </button>

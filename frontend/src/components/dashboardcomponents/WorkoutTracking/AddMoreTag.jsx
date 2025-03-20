@@ -111,7 +111,7 @@ const AddMoreTag = ({ setSelectedPage }) => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
         <div className="flex flex-col md:flex-row gap-2 w-full">
           <select
-            className={`p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+            className={`px-2 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
               isDarkMode
                 ? "border-gray-600 bg-gray-700 text-white"
                 : "border-gray-300 bg-gray-100"
@@ -125,7 +125,7 @@ const AddMoreTag = ({ setSelectedPage }) => {
 
           <input
             type="search"
-            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+            className={`w-full px-2 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
               isDarkMode
                 ? "border-gray-600 bg-gray-700 text-white"
                 : "border-gray-300 bg-gray-100"
@@ -136,7 +136,7 @@ const AddMoreTag = ({ setSelectedPage }) => {
           />
 
           <button
-            className="p-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
+            className=" px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
             onClick={() => setSelectedPage("AddTags")}
           >
             Add Tag

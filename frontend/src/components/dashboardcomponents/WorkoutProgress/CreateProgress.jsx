@@ -137,7 +137,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
                 name={field.name}
                 value={progress[field.name]}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full p-3 border text-slate-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 placeholder={`Enter ${field.label}`}
                 required
               />
@@ -151,7 +151,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
               name="date"
               value={progress.date}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full p-3 border text-slate-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               required
             />
           </div>
@@ -166,7 +166,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
                 value={exercise.exerciseName}
                 onChange={handleExerciseChange}
                 placeholder="Exercise Name"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                className="w-full p-3 border text-slate-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
               <input
                 type="number"
@@ -174,7 +174,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
                 value={exercise.weightUsed}
                 onChange={handleExerciseChange}
                 placeholder="Weight (kg)"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                className="w-full p-3 border text-slate-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
               <input
                 type="number"
@@ -182,13 +182,13 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
                 value={exercise.repsCompleted}
                 onChange={handleExerciseChange}
                 placeholder="Reps"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+                className="w-full p-3 border text-slate-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <button
               type="button"
               onClick={addExercise}
-              className="mt-3 w-full flex items-center justify-center bg-green-500 text-white font-semibold py-2 rounded-lg hover:bg-green-600 transition"
+              className="mt-3 w-full flex items-center justify-center bg-teal-600 text-white font-semibold py-2 rounded-lg hover:bg-green-900 transition"
             >
               <FaPlusCircle className="mr-2" />
               Add Exercise
@@ -199,7 +199,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
           {progress.exerciseProgress.length > 0 && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Added Exercises:</h3>
-              <ul className="bg-gray-100 p-3 rounded-lg">
+              <ul className="bg-gray-100 p-3 rounded-lg text-slate-800">
                 {progress.exerciseProgress.map((ex, index) => (
                   <li
                     key={index}
@@ -223,7 +223,7 @@ const CreateProgress = ({ setSelectedPage, editData }) => {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full flex items-center justify-center bg-teal-600 text-white font-semibold py-3 rounded-lg hover:bg-teal-800 transition duration-300"
           >
             <FaSave className="mr-2" />
             {editData ? "Update Progress" : "Save Progress"}

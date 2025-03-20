@@ -103,7 +103,7 @@ const MealType = ({ setSelectedPage }) => {
         <div className="flex flex-col md:flex-row gap-2 w-full">
           <input
             type="search"
-            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
               isDarkMode
                 ? "border-gray-600 bg-gray-700 text-white"
                 : "border-gray-300 bg-gray-100"
@@ -113,7 +113,7 @@ const MealType = ({ setSelectedPage }) => {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button
-            className="p-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
+            className="px-3 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
             onClick={() => setSelectedPage("AddMeal")}
           >
             Add Meal Type
@@ -205,7 +205,7 @@ const MealType = ({ setSelectedPage }) => {
 
       <div className="flex justify-center mt-6 space-x-3">
         <button
-          className={`p-3 rounded-lg font-semibold ${
+          className={`px-3 py-2 rounded-lg font-semibold ${
             currentPage === 1
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-teal-600 text-white hover:bg-teal-700"
@@ -215,7 +215,7 @@ const MealType = ({ setSelectedPage }) => {
         >
           Prev
         </button>
-        <span className={`p-3 text-lg font-medium ${isDarkMode ? "text-gray-300" : "text-teal-600"}`}>
+        <span className={`px-3 py-2 text-lg font-medium ${isDarkMode ? "text-gray-300" : "text-teal-600"}`}>
           {currentPage} / {totalPages}
         </span>
         <button

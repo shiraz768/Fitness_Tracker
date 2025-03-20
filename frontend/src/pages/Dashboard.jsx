@@ -17,8 +17,9 @@ import CreateProgress from "../components/dashboardcomponents/WorkoutProgress/Cr
 import AddMoreTag from "../components/dashboardcomponents/WorkoutTracking/AddMoreTag";
 import AddCategory from "../components/dashboardcomponents/WorkoutTracking/SubComponents/AddCategory";
 import AddTags from "../components/dashboardcomponents/WorkoutTracking/SubComponents/AddTags";
-import AddNutrition from "../components/dashboardcomponents/NutritonTracking/SubComponents/AddNutrition";
+import AddNutrition from "../components/dashboardcomponents/NutritonTracking/SubComponents/AddNutrition"
 import { useAuth } from "../AuthContext";
+import AddMeal from "../components/dashboardcomponents/NutritonTracking/SubComponents/AddMeal";
 export const useTheme = () => useContext(ThemeContext);
 
 const getInitialSelectedPage = () => {
@@ -105,7 +106,7 @@ const Dashboard = () => {
       }
       try {
         await axios.put(`http://localhost:5000/api/preferences/${userId}`, { theme: newTheme });
-        console.log("Theme updated in preferences:", newTheme);
+     
       } catch (err) {
         console.error("Error updating theme in preferences:", err);
       }
@@ -147,6 +148,8 @@ const Dashboard = () => {
         return <AddNutrition setSelectedPage={setSelectedPage} editData={selectedPage.data} />;
       case "CreateProgress":
         return <CreateProgress setSelectedPage={handleSetSelectedPage} editData={selectedPage.data} />;
+        case "AddMeal":
+          return <AddMeal/>
       default:
         return <DashboardHome />;
     }

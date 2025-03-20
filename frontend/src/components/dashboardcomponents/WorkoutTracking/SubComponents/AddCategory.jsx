@@ -31,7 +31,7 @@ const AddCategory = ({setSelectedPage}) => {
 
   return (
     <div className="max-w-lg mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+      <h2 className="text-3xl font-semibold text-center  text-gray-800 mb-6">
         Add Category
       </h2>
       <form onSubmit={handleSubmit}>
@@ -40,13 +40,13 @@ const AddCategory = ({setSelectedPage}) => {
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-800 focus:outline-none"
+            className="w-full p-3 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-slate-800 focus:outline-none"
             placeholder="Enter Category"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-slate-700 text-white font-semibold py-3 rounded-lg hover:bg-slate-900 transition duration-300"
+          className="w-full bg-teal-700 text-white font-semibold py-3 rounded-lg hover:bg-teal-900 transition duration-300"
         >
           Save Changes
         </button>

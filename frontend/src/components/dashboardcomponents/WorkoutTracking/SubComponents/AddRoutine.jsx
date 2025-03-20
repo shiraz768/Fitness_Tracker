@@ -135,7 +135,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
             name="exercisename"
             value={routine.exercisename}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full p-3 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             placeholder="Enter exercise name"
             required
           />
@@ -148,7 +148,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
             name="category"
             value={routine.category}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 text-gray-800 focus:ring-blue-400 focus:outline-none"
             required
           >
             <option value="">Select Category</option>
@@ -168,7 +168,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
             multiple
             value={routine.tags}
             onChange={handleTagChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 text-gray-800 focus:ring-blue-400 focus:outline-none"
           >
             {tags.map((tag) => (
               <option key={tag._id} value={tag._id}>
@@ -193,7 +193,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
                 name={field.name}
                 value={routine[field.name]}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 text-gray-800 focus:ring-blue-400 focus:outline-none"
                 placeholder={`Enter ${field.label}`}
                 required
               />
@@ -208,7 +208,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
             name="notes"
             value={routine.notes}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 text-gray-800 focus:ring-blue-400 focus:outline-none"
             placeholder="Additional notes"
           />
         </div>
@@ -216,7 +216,7 @@ const AddRoutine = ({ setSelectedPage, editData }) => {
       
         <button
           type="submit"
-          className="w-full flex items-center justify-center bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition duration-300"
+          className="w-full flex items-center justify-center bg-teal-600 text-white font-semibold py-3 rounded-lg hover:bg-teal-800 transition duration-300"
           disabled={loading}
         >
           <FaSave className="mr-2" />

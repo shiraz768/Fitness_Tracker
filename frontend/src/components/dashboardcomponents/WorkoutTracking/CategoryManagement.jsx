@@ -122,20 +122,21 @@ const CategoryManagement = ({ setSelectedPage }) => {
      
       <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
         <div className="flex flex-col md:flex-row gap-2 w-full">
-          <input
-            type="search"
-            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
-              isDarkMode
-                ? "border-gray-600 bg-gray-700 text-white"
-                : "border-gray-300 bg-gray-100"
-            }`}
-            placeholder="Search categories..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <input
+  type="search"
+  className={`w-full px-2 py-2 md:py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none ${
+    isDarkMode
+      ? "border-gray-600 bg-gray-700 text-white"
+      : "border-gray-300 bg-gray-100"
+  }`}
+  placeholder="Search categories..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
+
 
           <button
-            className="p-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
+            className="px-2 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"
             onClick={() => setSelectedPage("AddCategory")}
           >
             Add Category

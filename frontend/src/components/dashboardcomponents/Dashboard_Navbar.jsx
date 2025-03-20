@@ -20,11 +20,11 @@ const Dashboard_Navbar = ({
   const [nutritionDropdown, setNutritionDropdown] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  // Local state for user data if not provided via props
+ 
   const [userData, setUserData] = useState(user);
 
   useEffect(() => {
-    // If user prop is not available, fetch the user from the backend
+ 
     if (!userData) {
       const userId = localStorage.getItem("userId");
       if (userId) {
@@ -36,7 +36,7 @@ const Dashboard_Navbar = ({
           .catch((err) => console.error("Error fetching user:", err));
       }
     }
-    console.log(userData)
+    
   }, [userData]);
 
   return (
